@@ -10,7 +10,7 @@ class _CommonScaffoldState extends State<CommonScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+    appBar: AppBar(),
     );
   }
 }
