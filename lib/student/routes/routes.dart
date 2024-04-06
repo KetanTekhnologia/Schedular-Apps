@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:schedular_application/student/features/login/bloc/login_bloc.dart';
 
-import '../features/login/ui/login_screen.dart';
+import '../bloc/homebloc/home_bloc.dart';
+import '../bloc/loginbloc/login_bloc.dart';
+import '../presentation/screens/home_screen.dart';
+import '../presentation/screens/login_screen.dart';
+
 
 class Routes {
   static Route<dynamic>
   generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case 'login_page':
+      case 'login_screen':
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => LoginBloc(),
             child: LoginScreen(),
+          ),
+        );
+      case 'home_screen':
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => HomeBloc(),
+            child: HomeScreen(),
           ),
         );
       default:

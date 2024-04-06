@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:schedular_application/utils/app_colors.dart';
-import 'package:schedular_application/utils/text_style.dart';
+import 'package:schedular_application/student/presentation/constants/app_colors.dart';
+import 'package:schedular_application/student/presentation/constants/text_style.dart';
 import 'package:sizer/sizer.dart';
 
 
