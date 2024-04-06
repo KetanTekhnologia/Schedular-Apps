@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:schedular_application/student/bloc/confirmpasswordbloc/confirmpassword_bloc.dart';
+import 'package:schedular_application/student/bloc/forgetbloc/forget_bloc.dart';
 import 'package:schedular_application/student/bloc/homebloc/home_bloc.dart';
 import 'package:schedular_application/student/bloc/loginbloc/login_bloc.dart';
+import 'package:schedular_application/student/bloc/otpbloc/otp_bloc.dart';
 import 'package:schedular_application/student/routes/routes.dart';
 import 'package:schedular_application/student/presentation/widgets/common_button.dart';
 import 'package:sizer/sizer.dart';
 
 void main() {
   runApp(const MyApp());
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  //WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+ // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
 }
 
 class MyApp extends StatelessWidget {
@@ -25,20 +30,29 @@ class MyApp extends StatelessWidget {
             BlocProvider<LoginBloc>(
               create: (context) => LoginBloc(),
             ),
+            BlocProvider<ForgetBloc>(
+              create: (context)=>ForgetBloc(),
+            ),
             BlocProvider<HomeBloc>(
               create: (context)=>HomeBloc(),
-            )
+            ),
+            BlocProvider<OtpBloc>(
+              create: (context)=>OtpBloc(),
+            ),
+            BlocProvider<ConfirmPasswordBloc>(
+              create: (context)=>ConfirmPasswordBloc(),
+            ),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSwatch(
-                primarySwatch: Colors.deepPurple,
-              ).copyWith(
-              ),
-              useMaterial3: true,
-            ),
+            title: 'Scheduller Application',
+            // theme: ThemeData(
+            //   colorScheme: ColorScheme.fromSwatch(
+            //     primarySwatch: Colors.deepPurple,
+            //   ).copyWith(
+            //   ),
+            //   useMaterial3: true,
+            // ),
             onGenerateRoute: Routes.generateRoute,
             initialRoute: 'login_screen',
           ),
