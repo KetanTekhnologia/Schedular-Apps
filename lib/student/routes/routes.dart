@@ -6,12 +6,10 @@ import 'package:schedular_application/student/bloc/otpbloc/otp_bloc.dart';
 import 'package:schedular_application/student/presentation/screens/confirm_password.dart';
 import 'package:schedular_application/student/presentation/screens/forgot_password_screen.dart';
 import 'package:schedular_application/student/presentation/screens/otp_varification.dart';
-
 import '../bloc/homebloc/home_bloc.dart';
 import '../bloc/loginbloc/login_bloc.dart';
 import '../presentation/screens/home_screen.dart';
 import '../presentation/screens/login_screen.dart';
-
 
 class Routes {
   static Route<dynamic>
