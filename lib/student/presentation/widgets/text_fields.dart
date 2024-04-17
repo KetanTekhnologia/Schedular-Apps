@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../constants/app_colors.dart';
 import '../constants/text_style.dart';
+
+
 class CustomTextField extends StatelessWidget {
   final String? labelText;
   final String? hintText;
@@ -36,10 +39,13 @@ class CustomTextField extends StatelessWidget {
   final bool isShowCounterText;
   final TextStyle? labelStyle;
   final TextStyle? style;
+  final TextStyle? hintTextstyle;
   final Color? hintTextColor;
   final Color? borderColor;
   final Color? focusedBorderColor;
-
+  final Color? fillColor;
+  final EdgeInsetsGeometry? contentPadding;
+  final bool? enabled;
   const CustomTextField({
     Key? key,
     this.controller,
@@ -78,6 +84,11 @@ class CustomTextField extends StatelessWidget {
     this.hintTextColor,
     this.borderColor,
     this.focusedBorderColor,
+    this.hintTextstyle,
+    this.fillColor,
+    this.contentPadding,
+    this.enabled=true,
+    required List<TextInputFormatter> inputFormatters,
   }) : super(key: key);
 
   @override
@@ -129,7 +140,7 @@ class CustomTextField extends StatelessWidget {
                   color: focusedBorderColor ?? ColorsForApp.blueShade6.withOpacity(1),
                 ),
               ),
-              contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              contentPadding: contentPadding ??  EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               floatingLabelBehavior: FloatingLabelBehavior.never,
               counterText: isShowCounterText ? null : '',
               labelStyle: TextHelper.size16,
@@ -140,8 +151,10 @@ class CustomTextField extends StatelessWidget {
                 color: hintTextColor ?? ColorsForApp.greyColor.withOpacity(0.5),
               ),
               errorText: errorText,
-              fillColor: ColorsForApp.greyColor.withOpacity(0.5),
+              fillColor: fillColor??ColorsForApp.greyColor.withOpacity(0.5),
               filled: filled,
+              enabled:enabled?? true,
+
             ),
       ),
     );

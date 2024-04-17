@@ -33,7 +33,7 @@ class _OTPVarificationScreenState extends State<OTPVarificationScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "OTP Varification",
+                          "OTP Verification",
                           style: TextHelper.size20.copyWith(fontSize: 30, fontWeight: FontWeight.w600, color: ColorsForApp.headingPageColor),
                         )
                       ],
@@ -48,6 +48,7 @@ class _OTPVarificationScreenState extends State<OTPVarificationScreen> {
                     Padding(
                       padding: EdgeInsets.only(top: 1.h),
                       child: CustomTextField(
+                        keyboardType: TextInputType.number,
                         prefixIcon: Icon(Icons.person),
                         hintText: "Type OTP Code",
                         hintTextColor: Colors.black.withOpacity(0.6),
@@ -57,6 +58,7 @@ class _OTPVarificationScreenState extends State<OTPVarificationScreen> {
                           }
                           return null;
                         },
+                        inputFormatters: [],
                       ),
                     ),
                   ],
@@ -69,7 +71,7 @@ class _OTPVarificationScreenState extends State<OTPVarificationScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 14.sp),
             child: CommonButton(
-              buttonText: "Send",
+              buttonText: "Submit",
               onpressed: () {
                 if (loginKey.currentState!.validate()) {
                   Navigator.pushNamed(context, "confirm_password_screen");

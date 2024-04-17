@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:schedular_application/student/presentation/widgets/constant_widgets.dart';
 import 'package:sizer/sizer.dart';
 import '../constants/app_colors.dart';
 import '../constants/text_style.dart';
@@ -14,6 +16,13 @@ class ConfirmPasswordScreen extends StatefulWidget {
 }
 
 class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
+
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  bool passwordObsecured = true;
+  bool confirmPasswordObsecured = true;
+  String ? passwordError;
+  String ? confirmPasswordError;
   final GlobalKey<FormState> loginKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -48,36 +57,72 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                     Padding(
                       padding: EdgeInsets.only(top: 1.h),
                       child: CustomTextField(
+                        controller: passwordController,
                         prefixIcon: Icon(Icons.person),
-                        hintText: "Type Your Password",
+                        obscureText:passwordObsecured,
+                        hintText: "Type Your  Password",
+                        errorText: passwordError,
                         hintTextColor: Colors.black.withOpacity(0.6),
+                        onChange:  (value) {
+                          setState(() {
+                            passwordError = !isValidPassword(value)
+                                ? 'Password must contain atleast.\n 1) 8 characters long.\n 2) 1 special character.\n 3) 1 digit. \n 4) 1 capital character.'
+                                : null;
+                          });
+                        },
+                        suffixIcon: GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                passwordObsecured =! passwordObsecured;
+                              });
+                            },
+                            child: passwordObsecured ?Icon(Icons.visibility_off,color: Colors.black,):Icon(Icons.remove_red_eye,color: Colors.black,)),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Please Enter Your Password";
                           }
                           return null;
                         },
+                        inputFormatters: [],
                       ),
                     ),
                     SizedBox(height: 2.5.h),
                     Row(
                       children: [
-                        Text("Password",
+                        Text("Confirm Password",
                             style: TextStyle(fontWeight: FontWeight.w600,fontSize:18)),
                       ],
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 1.h),
                       child: CustomTextField(
+                        controller: confirmPasswordController,
                         prefixIcon: Icon(Icons.person),
-                        hintText: "Type Your Password",
+                        hintText: "Type Your Confirm Password",
+                        errorText: confirmPasswordError,
+                        obscureText: confirmPasswordObsecured,
                         hintTextColor: Colors.black.withOpacity(0.6),
+                        // onChange:  (value) {
+                        //   setState(() {
+                        //     confirmPasswordError = !isValidPassword(value)
+                        //         ? 'Password must contain atleast,\n 1) 8 characters long,\n 2) 1 special character,\n 3) 1 digit. \n 4) 1 capital character'
+                        //         : null;
+                        //   });
+                        // },
+                        suffixIcon: GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                confirmPasswordObsecured =! confirmPasswordObsecured;
+                              });
+                            },
+                            child: confirmPasswordObsecured ?Icon(Icons.visibility_off,color: Colors.black,):Icon(Icons.remove_red_eye,color: Colors.black,)),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Please Enter Your Password";
                           }
                           return null;
                         },
+                        inputFormatters: [],
                       ),
                     ),
                   ],
@@ -92,8 +137,14 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
             child: CommonButton(
               buttonText: "Submit",
               onpressed: () {
-                if (loginKey.currentState!.validate()) {
-                  Navigator.pushNamed(context, "login_screen");
+                if (isValidPassword(passwordController.text)==true) {
+                  if(passwordController.text ==confirmPasswordController.text ){
+                    Navigator.pushNamed(context, "login_screen");
+                  }
+                  else
+                    {
+                        return;
+                    }
                 }
               },
             ),
@@ -110,5 +161,17 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
         ],
       ),
     );
+  }
+
+  bool isValidPassword(String password) {
+    RegExp passwordRegex = RegExp(
+        r'^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$');
+    if (!passwordRegex.hasMatch(passwordController.text) ||
+        !passwordController.text.isNotEmpty ) {
+      return false;
+    } else {
+      return true;
+    }
+    // Your password validation logic, return true if valid, false otherwise
   }
 }
