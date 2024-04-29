@@ -1,5 +1,3 @@
- class HomeEvent {}
+abstract class HomeEvent {}
 
-// class LoginSuccesfulEvent extends LoginEvent {}
-//
-// class LoginUnSuccesfulEvent extends LoginEvent{}
+class HomeDataFetchEvent extends HomeEvent {}

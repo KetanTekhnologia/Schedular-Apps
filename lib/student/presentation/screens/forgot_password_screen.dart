@@ -1,129 +1,116 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 import 'package:sizer/sizer.dart';
 import '../constants/app_colors.dart';
 import '../constants/text_style.dart';
 import '../widgets/common_button.dart';
 import '../widgets/text_fields.dart';
-
+import 'otp_screen.dart';
+import 'otp_varification.dart';
 class ForgetScreen extends StatefulWidget {
-  const ForgetScreen({Key? key}) : super(key: key);
+  const ForgetScreen({super.key});
 
   @override
   State<ForgetScreen> createState() => _ForgetScreenState();
 }
-
 class _ForgetScreenState extends State<ForgetScreen> {
-  final GlobalKey<FormState> loginKey = GlobalKey<FormState>();
-  TextEditingController mobileController = TextEditingController();
-  String? phoneNumberError;
+  TextEditingController phoneController= TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: [
-          SizedBox(
-            height: 18.h,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 4.45.h, horizontal: 6.w),
-            child: Column(
-              children: [
-                Form(
-                  key: loginKey,
-                  child: Column(
+      // backgroundColor: Colors.pink,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              // padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+              padding: const EdgeInsets.only(top: 30,left: 30,right: 30,bottom: 100),
+
+              child: Column(
+                children: [
+                  Column(
                     children: [
+                      SizedBox(height: 17.4.h,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Forgot Password",
-                            style: TextHelper.size20.copyWith(
-                                fontSize: 30,
-                                fontWeight: FontWeight.w600,
-                                color: ColorsForApp.headingPageColor),
+                            "Forget Password",
+                            style: TextStyle( fontWeight: FontWeight.w600, color: ColorsForApp.headingPageColor,fontSize: 18.sp),
                           )
                         ],
                       ),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 12.h,),
                       Row(
                         children: [
-                          Text("Contact No",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 18)),
+                          Text("Mobile No.", style: TextHelper.h7.copyWith(fontWeight: FontWeight.w600),)
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 1.h),
-                        child: CustomTextField(
-                          controller: mobileController,
-                          prefixIcon: Icon(Icons.person),
-                          keyboardType: TextInputType.phone,
-                          hintText: "Type Your Contact Number",
-                          hintTextColor: Colors.black.withOpacity(0.6),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          onChange: (value) {
-                            setState(() {
-                              phoneNumberError = !isValidPhoneNumber(value)
-                                  ? 'Invalid phone number'
-                                  : null;
-                              if (value.length > 10) {
-                                mobileController.text = value.substring(0, 10);
-                              }
-                            });
-                          },
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Please Enter Mobile Number";
-                            } else if (value.length != 10) {
-                              return "Please Enter a 10-digit Phone Number";
+                        padding: const EdgeInsets.only(top: 18,),
+                        child: TextFormField(
+                          controller: phoneController,
+                          // keyboardType: TextInputType.phone,
+                          // prefixIcon: Icon(Icons.person),
+                          decoration: InputDecoration(
+
+                            hintText: "Enter your Mobile number",
+                            hintStyle: TextStyle(color: Colors.black.withOpacity(0.6),)
+                          ),
+
+                          validator: (value){
+                            if(value!.isEmpty) {
+                              return "Please Enter mobile number";
                             }
-                            return null;
                           },
                         ),
-                      )
-
+                      ),
+                      SizedBox(height: 5.h,),
                     ],
                   ),
+
+                  CommonButton(
+                    onpressed: () async {
+                      await FirebaseAuth.instance.verifyPhoneNumber(
+                          verificationCompleted: (PhoneAuthCredential credential) {},
+                          verificationFailed: (FirebaseException ex) {
+                          },
+                          codeSent: (String varificationId, int? resendToken) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OTPVarificationScreen(VarificationId: varificationId,),
+                                ));
+                          },
+                          codeAutoRetrievalTimeout: (String varificationId) {},
+                          phoneNumber: phoneController.text.toString());
+                    },
+                    buttonText: "Send",
+                    // buttonColor: Colors.red,
+                  ),
+                ],
+              ),
+            ),
+            // SizedBox(height: 1.5.h,),
+            SizedBox(
+              height: 28.3.h,
+              width: 100.w,
+              child: Container(
+                decoration: BoxDecoration(
+                  // color: Colors.pink.withOpacity(0.8),
+                    image: DecorationImage(
+                        image:AssetImage("assets/images/AppLogo.png"),fit: BoxFit.cover )
                 ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 4.85.h,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14.sp),
-            child: CommonButton(
-              buttonText: "Send",
-              onpressed: () {
-                if (loginKey.currentState!.validate() && isValidPhoneNumber(mobileController.text) ) {
-                  Navigator.pushNamed(context, "otp_screen");
-                }
-              },
-            ),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Image.asset("assets/images/AppLogo.png",
-                    height: 35.95.h, width: 100.w, fit: BoxFit.fill),
-              ],
-            ),
-          ),
-        ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
-
-  bool isValidPhoneNumber(String phoneNumber) {
-    RegExp phoneRegex = RegExp(r'^[0-9]{10}$');
-    return phoneRegex.hasMatch(phoneNumber);
-  }
 }
+

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "174978620099",
+    "project_id": "saotp-dbb0b",
+    "storage_bucket": "saotp-dbb0b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174978620099:android:bbff328b0a2039dc76a076",
+        "android_client_info": {
+          "package_name": "com.example.schedular_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo7Z6q3DRqT-axaV4p4Jq6u83eKiL_2_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

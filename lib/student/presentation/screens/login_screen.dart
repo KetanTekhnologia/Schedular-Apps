@@ -3,11 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedular_application/student/bloc/loginbloc/login_bloc.dart';
 import 'package:schedular_application/student/bloc/loginbloc/login_event.dart';
+import 'package:schedular_application/student/presentation/screens/home1.dart';
 import 'package:sizer/sizer.dart';
 import '../constants/app_colors.dart';
 import '../constants/text_style.dart';
 import '../widgets/common_button.dart';
 import '../widgets/text_fields.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -139,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                  buttonText: "Log In",
                  onpressed: () {
                    if (loginKey.currentState!.validate()) {
-                     Navigator.pushNamed(context, "home_screen");
+                     Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
                    }
                  },
                ),

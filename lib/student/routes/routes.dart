@@ -8,8 +8,10 @@ import 'package:schedular_application/student/presentation/screens/forgot_passwo
 import 'package:schedular_application/student/presentation/screens/otp_varification.dart';
 import '../bloc/homebloc/home_bloc.dart';
 import '../bloc/loginbloc/login_bloc.dart';
+import '../presentation/screens/home1.dart';
 import '../presentation/screens/home_screen.dart';
 import '../presentation/screens/login_screen.dart';
+import '../presentation/screens/otp_screen.dart';
 
 class Routes {
   static Route<dynamic>
@@ -25,8 +27,8 @@ class Routes {
       case 'home_screen':
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => HomeBloc(),
-            child: HomeScreen(),
+            create: (context) => HomeDataBloc(),
+            child: HomeScreen1(),
           ),
         );
       case 'forget_screen':
@@ -47,7 +49,7 @@ class Routes {
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
               create:(context) => OtpBloc(),
-              child:OTPVarificationScreen(),
+              child:OTPVarificationScreen(VarificationId: '',),
             )
         );
       default:

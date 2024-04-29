@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
@@ -5,15 +8,19 @@ import '../constants/app_colors.dart';
 import '../constants/text_style.dart';
 import '../widgets/common_button.dart';
 import '../widgets/text_fields.dart';
+import 'home_screen.dart';
 
 class OTPVarificationScreen extends StatefulWidget {
-  const OTPVarificationScreen({Key? key}) : super(key: key);
+  String VarificationId;
+  OTPVarificationScreen({super.key, required this.VarificationId});
 
   @override
   State<OTPVarificationScreen> createState() => _OTPVarificationScreenState();
 }
 
 class _OTPVarificationScreenState extends State<OTPVarificationScreen> {
+  TextEditingController OtpController = TextEditingController();
+
   final GlobalKey<FormState> loginKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -59,6 +66,8 @@ class _OTPVarificationScreenState extends State<OTPVarificationScreen> {
                           return null;
                         },
                         inputFormatters: [],
+
+
                       ),
                     ),
                   ],
@@ -72,9 +81,17 @@ class _OTPVarificationScreenState extends State<OTPVarificationScreen> {
             padding: EdgeInsets.symmetric(horizontal: 14.sp),
             child: CommonButton(
               buttonText: "Submit",
-              onpressed: () {
-                if (loginKey.currentState!.validate()) {
-                  Navigator.pushNamed(context, "confirm_password_screen");
+              onpressed: () async {
+                try {
+                  PhoneAuthCredential credential =
+                  await PhoneAuthProvider.credential(
+                      verificationId: widget.VarificationId,
+                      smsCode: OtpController.text.toString());
+                  FirebaseAuth.instance.signInWithCredential(credential).then((value){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(),));
+                  });
+                } catch (ex) {
+                  log(ex.toString());
                 }
               },
             ),

@@ -5,10 +5,19 @@ import 'package:schedular_application/student/bloc/forgetbloc/forget_bloc.dart';
 import 'package:schedular_application/student/bloc/homebloc/home_bloc.dart';
 import 'package:schedular_application/student/bloc/loginbloc/login_bloc.dart';
 import 'package:schedular_application/student/bloc/otpbloc/otp_bloc.dart';
+import 'package:schedular_application/student/presentation/screens/login_screen.dart';
+import 'package:schedular_application/student/presentation/screens/phone_auth_screen.dart';
 import 'package:schedular_application/student/routes/routes.dart';
 import 'package:sizer/sizer.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
+  await Firebase.initializeApp(
+   );
   runApp(const MyApp());
 }
 class MyApp extends StatelessWidget {
@@ -25,8 +34,8 @@ class MyApp extends StatelessWidget {
             BlocProvider<ForgetBloc>(
               create: (context)=>ForgetBloc(),
             ),
-            BlocProvider<HomeBloc>(
-              create: (context)=>HomeBloc(),
+            BlocProvider<HomeDataBloc>(
+              create: (context)=>HomeDataBloc(),
             ),
             BlocProvider<OtpBloc>(
               create: (context)=>OtpBloc(),
@@ -40,6 +49,7 @@ class MyApp extends StatelessWidget {
             title: 'Scheduler Application',
             onGenerateRoute: Routes.generateRoute,
             initialRoute: 'login_screen',
+            // home: LoginScreen(),
           ),
         );
       },
