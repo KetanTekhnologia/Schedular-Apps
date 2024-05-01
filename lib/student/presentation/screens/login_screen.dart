@@ -19,6 +19,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final RegExp usernameRegex = RegExp(r'^[a-zA-Z]+$');
+  final RegExp passwordRegex = RegExp(r'^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z]).{8,}$');
+
   bool passwordObsecured = true;
   final GlobalKey<FormState> loginKey = GlobalKey<FormState>();
  TextEditingController usernameController=TextEditingController();
@@ -75,6 +78,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                if (value!.isEmpty) {
                                  return "Please Enter Username";
                                }
+                               else if (!usernameRegex.hasMatch(value)) {
+                                 return "Username can only contain letters";
+                               }
+
                                return null;
                              },
                              inputFormatters: [],
@@ -109,6 +116,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                if (value!.isEmpty) {
                                  return "Please Enter Password";
                                }
+                               else if (!passwordRegex.hasMatch(value)) {
+                                 return "Password must be at least 8 characters long";
+                               }
+
                                return null;
                              },
                              inputFormatters: [],

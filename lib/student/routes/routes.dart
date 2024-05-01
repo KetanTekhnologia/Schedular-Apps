@@ -49,7 +49,7 @@ class Routes {
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
               create:(context) => OtpBloc(),
-              child:OTPVarificationScreen(VarificationId: '',),
+              child:OTPScreens( verificationId: '',),
             )
         );
       default:

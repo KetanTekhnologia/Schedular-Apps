@@ -17,7 +17,7 @@ class ForgetScreen extends StatefulWidget {
   State<ForgetScreen> createState() => _ForgetScreenState();
 }
 class _ForgetScreenState extends State<ForgetScreen> {
-  TextEditingController phoneController= TextEditingController();
+  TextEditingController phoneController= TextEditingController(text: '+91');
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Forget Password",
+                            "Forgot Password",
                             style: TextStyle( fontWeight: FontWeight.w600, color: ColorsForApp.headingPageColor,fontSize: 18.sp),
                           )
                         ],
@@ -47,27 +47,33 @@ class _ForgetScreenState extends State<ForgetScreen> {
                       SizedBox(height: 12.h,),
                       Row(
                         children: [
-                          Text("Mobile No.", style: TextHelper.h7.copyWith(fontWeight: FontWeight.w600),)
+                          Text("Mobile No", style: TextHelper.h7.copyWith(fontWeight: FontWeight.w600),)
                         ],
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 18,),
                         child: TextFormField(
                           controller: phoneController,
-                          // keyboardType: TextInputType.phone,
+                          keyboardType: TextInputType.number, // Set keyboard type to only allow numbers
+                          maxLength: 13, // Restrict the input to 10 characters
                           // prefixIcon: Icon(Icons.person),
                           decoration: InputDecoration(
-
                             hintText: "Enter your Mobile number",
-                            hintStyle: TextStyle(color: Colors.black.withOpacity(0.6),)
+                            hintStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
                           ),
-
-                          validator: (value){
-                            if(value!.isEmpty) {
+                          validator: (value) {
+                            if (value!.isEmpty) {
                               return "Please Enter mobile number";
                             }
+                            if (value.length !=10) {
+                              return "Mobile number must be 10 digits";
+                            }
+                            // You can add additional validation logic here
                           },
+
                         ),
+
+
                       ),
                       SizedBox(height: 5.h,),
                     ],
@@ -80,11 +86,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                           verificationFailed: (FirebaseException ex) {
                           },
                           codeSent: (String varificationId, int? resendToken) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => OTPVarificationScreen(VarificationId: varificationId,),
-                                ));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => OTPScreens(verificationId: varificationId),));
                           },
                           codeAutoRetrievalTimeout: (String varificationId) {},
                           phoneNumber: phoneController.text.toString());

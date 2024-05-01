@@ -4,11 +4,10 @@ import 'package:flutter/services.dart';
 import '../constants/app_colors.dart';
 import '../constants/text_style.dart';
 
-
 class CustomTextField extends StatelessWidget {
   final String? labelText;
   final String? hintText;
-  final String? errorText;
+  final String? errorText; // Updated to receive error text from the parent widget
   final TextEditingController? controller;
   final TextInputAction? textInputAction;
   final TextInputType? keyboardType;
@@ -46,11 +45,14 @@ class CustomTextField extends StatelessWidget {
   final Color? fillColor;
   final EdgeInsetsGeometry? contentPadding;
   final bool? enabled;
+
+
   const CustomTextField({
     Key? key,
     this.controller,
     this.labelText,
     this.hintText,
+    this.errorText, // Updated to receive error text from the parent widget
     this.height,
     this.textInputAction,
     this.keyboardType,
@@ -75,26 +77,23 @@ class CustomTextField extends StatelessWidget {
     this.onTap,
     this.readOnly = false,
     this.autovalidateMode,
-    this.errorText,
     this.isRequired = false,
     this.textCapitalization,
     this.isShowCounterText = false,
     this.labelStyle,
     this.style,
+    this.hintTextstyle,
     this.hintTextColor,
     this.borderColor,
     this.focusedBorderColor,
-    this.hintTextstyle,
     this.fillColor,
     this.contentPadding,
-    this.enabled=true,
-    required List<TextInputFormatter> inputFormatters,
+    this.enabled = true, required List inputFormatters,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      // height: height ?? 55,
       width: width,
       child: TextFormField(
         style: style ??
@@ -140,7 +139,7 @@ class CustomTextField extends StatelessWidget {
                   color: focusedBorderColor ?? ColorsForApp.blueShade6.withOpacity(1),
                 ),
               ),
-              contentPadding: contentPadding ??  EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              contentPadding: contentPadding ?? EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               floatingLabelBehavior: FloatingLabelBehavior.never,
               counterText: isShowCounterText ? null : '',
               labelStyle: TextHelper.size16,
@@ -150,11 +149,10 @@ class CustomTextField extends StatelessWidget {
               hintStyle: TextHelper.size14.copyWith(
                 color: hintTextColor ?? ColorsForApp.greyColor.withOpacity(0.5),
               ),
-              errorText: errorText,
-              fillColor: fillColor??ColorsForApp.greyColor.withOpacity(0.5),
+              errorText: errorText, // Use the error text provided by the parent widget
+              fillColor: fillColor ?? ColorsForApp.greyColor.withOpacity(0.5),
               filled: filled,
-              enabled:enabled?? true,
-
+              enabled: enabled ?? true,
             ),
       ),
     );

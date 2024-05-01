@@ -41,46 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAU3Ut5RsbJwHw2OIEu-AoHbRvrAzzFHZI',
-    appId: '1:174978620099:web:6ea64114cd0d604776a076',
-    messagingSenderId: '174978620099',
-    projectId: 'saotp-dbb0b',
-    authDomain: 'saotp-dbb0b.firebaseapp.com',
-    storageBucket: 'saotp-dbb0b.appspot.com',
+    apiKey: 'AIzaSyCL2RvfUZ1eIxijAUPnl-ezFKMc3cCeTlE',
+    appId: '1:339799794779:web:3c5c4ca755f091e9c04b7e',
+    messagingSenderId: '339799794779',
+    projectId: 'phonenumber-faff6',
+    authDomain: 'phonenumber-faff6.firebaseapp.com',
+    storageBucket: 'phonenumber-faff6.appspot.com',
+    measurementId: 'G-7ENN7XEMJH',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDo7Z6q3DRqT-axaV4p4Jq6u83eKiL_2_M',
-    appId: '1:174978620099:android:bbff328b0a2039dc76a076',
-    messagingSenderId: '174978620099',
-    projectId: 'saotp-dbb0b',
-    storageBucket: 'saotp-dbb0b.appspot.com',
+    apiKey: 'AIzaSyB3SZKfVWHGy_chfL8dIOOU2jRaA4k1XHQ',
+    appId: '1:339799794779:android:19ece476e02679d7c04b7e',
+    messagingSenderId: '339799794779',
+    projectId: 'phonenumber-faff6',
+    storageBucket: 'phonenumber-faff6.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC0A4Rx5MdsR1WTKtrer0YDi21koYd_OhU',
-    appId: '1:174978620099:ios:66a45b2ab0683ee476a076',
-    messagingSenderId: '174978620099',
-    projectId: 'saotp-dbb0b',
-    storageBucket: 'saotp-dbb0b.appspot.com',
+    apiKey: 'AIzaSyA7PBrnrDj8r-t5yfzOKc9CzbuARrWPfjg',
+    appId: '1:339799794779:ios:b225d5bef757df37c04b7e',
+    messagingSenderId: '339799794779',
+    projectId: 'phonenumber-faff6',
+    storageBucket: 'phonenumber-faff6.appspot.com',
     iosBundleId: 'com.example.schedularApplication',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyC0A4Rx5MdsR1WTKtrer0YDi21koYd_OhU',
-    appId: '1:174978620099:ios:66a45b2ab0683ee476a076',
-    messagingSenderId: '174978620099',
-    projectId: 'saotp-dbb0b',
-    storageBucket: 'saotp-dbb0b.appspot.com',
+    apiKey: 'AIzaSyA7PBrnrDj8r-t5yfzOKc9CzbuARrWPfjg',
+    appId: '1:339799794779:ios:b225d5bef757df37c04b7e',
+    messagingSenderId: '339799794779',
+    projectId: 'phonenumber-faff6',
+    storageBucket: 'phonenumber-faff6.appspot.com',
     iosBundleId: 'com.example.schedularApplication',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyAU3Ut5RsbJwHw2OIEu-AoHbRvrAzzFHZI',
-    appId: '1:174978620099:web:3aa5931ef0f6c28876a076',
-    messagingSenderId: '174978620099',
-    projectId: 'saotp-dbb0b',
-    authDomain: 'saotp-dbb0b.firebaseapp.com',
-    storageBucket: 'saotp-dbb0b.appspot.com',
+    apiKey: 'AIzaSyCL2RvfUZ1eIxijAUPnl-ezFKMc3cCeTlE',
+    appId: '1:339799794779:web:dad3d94509b785f3c04b7e',
+    messagingSenderId: '339799794779',
+    projectId: 'phonenumber-faff6',
+    authDomain: 'phonenumber-faff6.firebaseapp.com',
+    storageBucket: 'phonenumber-faff6.appspot.com',
+    measurementId: 'G-RKSFY7LJX4',
   );
+
 }

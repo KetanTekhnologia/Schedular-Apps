@@ -1,111 +1,137 @@
-import 'dart:developer';
-
+import 'dart:async';
+import 'dart:developer'; // Import for using log function
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
+
 import '../constants/app_colors.dart';
-import '../constants/text_style.dart';
-import '../widgets/common_button.dart';
-import '../widgets/text_fields.dart';
 import 'home_screen.dart';
 
-class OTPVarificationScreen extends StatefulWidget {
-  String VarificationId;
-  OTPVarificationScreen({super.key, required this.VarificationId});
+class OTPScreens extends StatefulWidget {
+  final String verificationId; // Add this line
+
+  OTPScreens({required this.verificationId}); // Add this constructor
 
   @override
-  State<OTPVarificationScreen> createState() => _OTPVarificationScreenState();
+  _OTPScreensState createState() => _OTPScreensState();
 }
 
-class _OTPVarificationScreenState extends State<OTPVarificationScreen> {
-  TextEditingController OtpController = TextEditingController();
+class _OTPScreensState extends State<OTPScreens> {
+  Timer? _timer;
+  int _countdown = 60;
+  TextEditingController _otpController = TextEditingController(); // Renamed variable
 
-  final GlobalKey<FormState> loginKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+          (timer) {
+        setState(() {
+          if (_countdown == 0) {
+            timer.cancel();
+            // Handle timeout, maybe resend OTP or show an error message
+          } else {
+            _countdown--;
+          }
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: [
-          SizedBox(height: 18.h,),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical:4.45.h, horizontal: 6.w),            child: Column(
-            children: [
-              Form(
-                key: loginKey,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "OTP Verification",
-                          style: TextHelper.size20.copyWith(fontSize: 30, fontWeight: FontWeight.w600, color: ColorsForApp.headingPageColor),
-                        )
-                      ],
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5.0.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Otp Verification",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: ColorsForApp.headingPageColor,
+                      fontSize: 18.sp,
                     ),
-                    SizedBox(height: 10.h),
-                    Row(
-                      children: [
-                        Text("Enter OTP",
-                            style: TextStyle(fontWeight: FontWeight.w600,fontSize:18)),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 1.h),
-                      child: CustomTextField(
-                        keyboardType: TextInputType.number,
-                        prefixIcon: Icon(Icons.person),
-                        hintText: "Type OTP Code",
-                        hintTextColor: Colors.black.withOpacity(0.6),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Please Enter OTP Code";
-                          }
-                          return null;
-                        },
-                        inputFormatters: [],
-
-
+                  )
+                ],
+              ),
+              SizedBox(height: 8.h),
+              Text(
+                'OTP will be valid for $_countdown seconds',
+                style: TextStyle(fontSize: 20),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: _otpController,
+                decoration: InputDecoration(
+                  hintText: "Enter OTP",
+                ),
+              ),
+              SizedBox(height: 40.sp),
+              GestureDetector(
+                onTap: () async {
+                  if (_countdown == 0) {
+                    // Reset timer and change submit text to reset
+                    _countdown = 60;
+                    startTimer();
+                    setState(() {});
+                  } else {
+                    try {
+                      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+                        verificationId: widget.verificationId,
+                        smsCode: _otpController.text.toString(),
+                      );
+                      await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                        );
+                      });
+                    } catch (ex) {
+                      log(ex.toString());
+                      // Handle error, show error message to the user
+                    }
+                  }
+                },
+                child: Container(
+                  height: 6.h,
+                  width: 90.w,
+                  decoration: BoxDecoration(
+                    color: Color(0xFF1066FF).withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Center(
+                    child: Text(
+                      _countdown == 0 ? "Reset" : "Submit",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ],
           ),
-          ),
-          SizedBox(height: 4.85.h,),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14.sp),
-            child: CommonButton(
-              buttonText: "Submit",
-              onpressed: () async {
-                try {
-                  PhoneAuthCredential credential =
-                  await PhoneAuthProvider.credential(
-                      verificationId: widget.VarificationId,
-                      smsCode: OtpController.text.toString());
-                  FirebaseAuth.instance.signInWithCredential(credential).then((value){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(),));
-                  });
-                } catch (ex) {
-                  log(ex.toString());
-                }
-              },
-            ),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Image.asset("assets/images/AppLogo.png", height: 35.95.h, width: 100.w, fit: BoxFit.fill),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

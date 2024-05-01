@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Scheduler Application',
             onGenerateRoute: Routes.generateRoute,
-            initialRoute: 'login_screen',
+            initialRoute: 'forget_screen',
             // home: LoginScreen(),
           ),
         );
