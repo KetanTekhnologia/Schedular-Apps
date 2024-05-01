@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'dart:developer'; // Import for using log function
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -17,38 +15,7 @@ class OTPScreens extends StatefulWidget {
 }
 
 class _OTPScreensState extends State<OTPScreens> {
-  Timer? _timer;
-  int _countdown = 60;
   TextEditingController _otpController = TextEditingController(); // Renamed variable
-
-  @override
-  void initState() {
-    super.initState();
-    startTimer();
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  void startTimer() {
-    const oneSec = Duration(seconds: 1);
-    _timer = Timer.periodic(
-      oneSec,
-          (timer) {
-        setState(() {
-          if (_countdown == 0) {
-            timer.cancel();
-            // Handle timeout, maybe resend OTP or show an error message
-          } else {
-            _countdown--;
-          }
-        });
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,11 +39,6 @@ class _OTPScreensState extends State<OTPScreens> {
                   )
                 ],
               ),
-              SizedBox(height: 8.h),
-              Text(
-                'OTP will be valid for $_countdown seconds',
-                style: TextStyle(fontSize: 20),
-              ),
               SizedBox(height: 20),
               TextFormField(
                 controller: _otpController,
@@ -87,27 +49,20 @@ class _OTPScreensState extends State<OTPScreens> {
               SizedBox(height: 40.sp),
               GestureDetector(
                 onTap: () async {
-                  if (_countdown == 0) {
-                    // Reset timer and change submit text to reset
-                    _countdown = 60;
-                    startTimer();
-                    setState(() {});
-                  } else {
-                    try {
-                      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-                        verificationId: widget.verificationId,
-                        smsCode: _otpController.text.toString(),
+                  try {
+                    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+                      verificationId: widget.verificationId,
+                      smsCode: _otpController.text.toString(),
+                    );
+                    await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
                       );
-                      await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                        );
-                      });
-                    } catch (ex) {
-                      log(ex.toString());
-                      // Handle error, show error message to the user
-                    }
+                    });
+                  } catch (ex) {
+                    // Handle error, show error message to the user
+                    print(ex.toString());
                   }
                 },
                 child: Container(
@@ -119,7 +74,7 @@ class _OTPScreensState extends State<OTPScreens> {
                   ),
                   child: Center(
                     child: Text(
-                      _countdown == 0 ? "Reset" : "Submit",
+                      "Submit",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 15.sp,
